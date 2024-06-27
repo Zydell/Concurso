@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const Credenciales = sequelize.define('tb_credencial', {
+    const Credenciales = sequelize.define('tb_credenciales', {
       credencial_id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.NOW,
       }
     }, {
-      tableName: 'tb_credencial',
+      tableName: 'tb_credenciales',
       timestamps: false
     });
     

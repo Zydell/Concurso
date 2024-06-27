@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     
     Reservaesp.associate = function(models) {
       Reservaesp.belongsTo(models.tb_laboratorio, { foreignKey: 'reservalab_id' });
-      Reservaesp.belongsTo(models.tb_credencial, { foreignKey: 'credencial_id' });
+      Reservaesp.belongsTo(models.tb_credenciales, { foreignKey: 'credencial_id' });
       Reservaesp.belongsTo(models.tb_disponibilidad, { foreignKey: 'disponibilidad_id' });
     };
   

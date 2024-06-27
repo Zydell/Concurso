@@ -18,13 +18,7 @@ exports.registerEstudiante = async (req, res) => {
         if (await emailExists(correo_electronico)) {
             return res.status(400).json({ message: 'El correo ya está registrado.' });
         }
-        /*
-        // Verificar si el usuario es mayor de edad
-        const age = calculateAge(fecha_nac);
-        if (age < 18) {
-            return res.status(400).json({ message: 'Debe ser mayor de 18 años para registrarse.' });
-        }
-        */
+        
         // Encriptar contraseña
         const hashedPassword = await bcrypt.hash(contrasena, 10);
 
