@@ -19,6 +19,6 @@ module.exports = (sequelize, DataTypes) => {
       Reservaesp.belongsTo(models.tb_disponibilidad, { foreignKey: 'disponibilidad_id' });
     };
   
-    return Reservalab;
+    return Reservaesp;
   };
   
