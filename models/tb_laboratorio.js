@@ -5,6 +5,10 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
         primaryKey: true
       },
+      horarioaten_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
       nombre: {
         type: DataTypes.STRING(100),
         allowNull: false
@@ -29,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
       tableName: 'tb_laboratorio',
       timestamps: false
     });
+
+    Laboratorio.associate = function(models) {
+        Laboratorio.belongsTo(models.tb_horarioatencion, { foreignKey: 'horararioaten_id' });
+    };
   
     return Laboratorio;
   };
