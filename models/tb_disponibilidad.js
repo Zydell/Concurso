@@ -17,14 +17,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false
       },
-      fechacreacion: {
-        type: DataTypes.DATE,
-        defaultValue: DataTypes.NOW,
-      }
     }, {
       tableName: 'tb_disponibilidad',
       timestamps: false
     });
+
+    Disponibildad.associate = function(models) {
+      Disponibildad.belongsTo(models.tb_laboratorio, { foreignKey: 'laboratorio_id' });
+    };
   
     return Disponibildad;
   };
