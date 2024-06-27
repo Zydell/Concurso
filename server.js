@@ -6,6 +6,7 @@ const passport = require('passport');
 
 
 const authRoutes = require('./routes/auth');
+const reseRoutes = require('./routes/reservas');
 const passportJWT = require('passport-jwt');
 const { Strategy, ExtractJwt } = passportJWT;
 const laboratorioRoutes = require('./routes/laboratorios');
@@ -43,6 +44,7 @@ app.use('/api/protected', passport.authenticate('jwt', { session: false }), (req
   res.json({ message: 'Acceso a la Ruta protegida' });
 });
 app.use('/api/laboratorio', laboratorioRoutes);
+app.use('/api/reservas', reseRoutes);
 /*
 app.use('/api/reciclaje', reciclajeRoutes);
 
