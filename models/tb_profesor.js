@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.NOW,
       }*/
     }, {
-      tableName: 'tb_estudiante',
+      tableName: 'tb_profesor',
       timestamps: false
     });
   
