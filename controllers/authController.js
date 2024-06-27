@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { tb_credenciales, tb_ciudadano, tb_negocio, tb_admin, tb_greencoin_cdn } = require('../models');
+const { tb_credenciales, tb_estudiante, tb_profesor, tb_personaladmin } = require('../models');
 const notificationService = require('../services/notificationService');
 
 
@@ -9,7 +9,7 @@ const emailExists = async (correo_electronico) => {
     const existingUser = await tb_credenciales.findOne({ where: { correo_electronico } });
     return !!existingUser;
 };
-
+/*
 // Calcular la edad a partir de la fecha de nacimiento
 const calculateAge = (fecha_nac) => {
     const birthDate = new Date(fecha_nac);
@@ -21,60 +21,51 @@ const calculateAge = (fecha_nac) => {
     }
     return age;
 };
-
-// Registro de Ciudadano
-exports.registerCiudadano = async (req, res) => {
+*/
+// Registro de Estudiante
+exports.registerEstudiante = async (req, res) => {
     try {
-        const { nombre, apellido, telefono, fecha_nac, correo_electronico, contrasena } = req.body;
+        const { nombre, apellido, telefono, correo_electronico, contrasena } = req.body;
 
         if (await emailExists(correo_electronico)) {
             return res.status(400).json({ message: 'El correo ya está registrado.' });
         }
-
+        /*
         // Verificar si el usuario es mayor de edad
         const age = calculateAge(fecha_nac);
         if (age < 18) {
             return res.status(400).json({ message: 'Debe ser mayor de 18 años para registrarse.' });
         }
-
+        */
         // Encriptar contraseña
         const hashedPassword = await bcrypt.hash(contrasena, 10);
-        
-        // Crear greencoin
-        const greencoin = await tb_greencoin_cdn.create({
-            registro_id: null,
-            total: 0,
-            canjeo_id: null
-        });
 
-        // Crear ciudadano
-        const ciudadano = await tb_ciudadano.create({
+        // Crear estudiante
+        const estudiante = await tb_estudiante.create({
             nombre,
             apellido,
             telefono,
-            fecha_nac,
             fecharegistro: new Date(),
-            greencoin_id: greencoin.greencoin_id
         });
 
         // Crear registro de credenciales
         await tb_credenciales.create({
             correo_electronico,
             contrasena: hashedPassword,
-            tipousuario: 1, // 1 para ciudadano
-            usuario_id: ciudadano.ciudadano_id
+            tipousuario: 1, // 1 para estudiante
+            usuario_id: estudiante.estudiante_id
         });
 
-        res.status(201).json({ message: 'Ciudadano registrado exitosamente' });
+        res.status(201).json({ message: 'Estudiante registrado exitosamente' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
 
-// Registro de Negocio
-exports.registerNegocio = async (req, res) => {
+// Registro de Profesor
+exports.registerProfesor = async (req, res) => {
     try {
-        const { nombre, propietario, tipo_negocio, direccion, telefono, correo_electronico, contrasena } = req.body;
+        const { nombre, apellido, telefono, correo_electronico, contrasena } = req.body;
         
         if (await emailExists(correo_electronico)) {
             return res.status(400).json({ message: 'El correo ya está registrado.' });
@@ -83,7 +74,7 @@ exports.registerNegocio = async (req, res) => {
         const hashedPassword = await bcrypt.hash(contrasena, 10);
 
         // Crear negocio
-        const negocio = await tb_negocio.create({
+        const profesor = await tb_profesor.create({
             nombre,
             propietario,
             tipo_negocio,
@@ -96,11 +87,11 @@ exports.registerNegocio = async (req, res) => {
         await tb_credenciales.create({
             correo_electronico,
             contrasena: hashedPassword,
-            tipousuario: 2, // 2 para negocio
-            usuario_id: negocio.negocio_id
+            tipousuario: 2, // 2 para profesor
+            usuario_id: profesor.profesor_id
         });
 
-        res.status(201).json({ message: 'Negocio registrado exitosamente' });
+        res.status(201).json({ message: 'Profesor registrado exitosamente' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -118,7 +109,7 @@ exports.registerAdmin = async (req, res) => {
         const hashedPassword = await bcrypt.hash(contrasena, 10);
 
         // Crear admin
-        const admin = await tb_admin.create({
+        const admin = await tb_personaladmin.create({
             nombre//,
             //correo: correo_electronico,
             //password: hashedPassword,
@@ -129,7 +120,7 @@ exports.registerAdmin = async (req, res) => {
             correo_electronico,
             contrasena: hashedPassword,
             tipousuario: 3, // 3 para admin
-            usuario_id: admin.admin_id
+            usuario_id: admin.personaladmin_id
         });
 
         res.status(201).json({ message: 'Admin registrado exitosamente' });

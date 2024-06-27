@@ -1,43 +1,39 @@
 module.exports = (sequelize, DataTypes) => {
-    const PuntosVerdes = sequelize.define('tb_puntos_verdes', {
-      punto_verde_id: {
+    const Estudiante = sequelize.define('tb_estudiante', {
+      estudiante_id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
       },
-      descripcion: {
+      nombre: {
         type: DataTypes.STRING(100),
         allowNull: false
       },
-      direccion: {
-        type: DataTypes.STRING(200),
+      apellido: {
+        type: DataTypes.STRING(100),
         allowNull: false
       },
-      latitud: {
-        type: DataTypes.DOUBLE,
+      telefono: {
+        type: DataTypes.CHAR(10),
         allowNull: false
       },
-      longitud: {
-        type: DataTypes.DOUBLE,
-        allowNull: false
-      },
-      negocio_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+      fecharegistro: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
       },
       estado: {
         type: DataTypes.BOOLEAN,
         defaultValue: true,
       },
-      fechacreacion: {
+      /*fechacreacion: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
-      },
+      }*/
     }, {
-      tableName: 'tb_puntos_verdes',
+      tableName: 'tb_estudiante',
       timestamps: false
     });
   
-    return PuntosVerdes;
+    return Estudiante;
   };
   

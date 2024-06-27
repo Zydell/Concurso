@@ -3,15 +3,12 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const db = require('./models'); // Asegúrate de que el archivo de modelos está bien configurado
 const passport = require('passport');
-
-
-
 const authRoutes = require('./routes/auth');
 const passportJWT = require('passport-jwt');
 const { Strategy, ExtractJwt } = passportJWT;
-const reciclajeRoutes = require('./routes/reciclajeRoutes');
-const operaciones = require('./routes/operaciones');
-const notificationRoutes = require('./routes/notificationRoutes'); // Importar rutas de notificaciones
+//const reciclajeRoutes = require('./routes/reciclajeRoutes');
+//const operaciones = require('./routes/operaciones');
+//const notificationRoutes = require('./routes/notificationRoutes'); // Importar rutas de notificaciones
 
 //require('./config/passport')(passport);
 
@@ -38,12 +35,14 @@ passport.use(new Strategy(jwtOptions, async (jwt_payload, done) => {
 
 app.use(passport.initialize());
 
-// Incluir rutas CRUD
-app.use('/api/reciclaje', reciclajeRoutes);
+// Rutas
 app.use('/api/auth', authRoutes);
 app.use('/api/protected', passport.authenticate('jwt', { session: false }), (req, res) => {
   res.json({ message: 'Acceso a la Ruta protegida' });
 });
+/*
+app.use('/api/reciclaje', reciclajeRoutes);
+
 app.use('/api/negocios', require('./routes/negocioRoutes'));
 app.use('/api/ofertas', require('./routes/ofertaRoutes'));
 app.use('/api/credenciales', require('./routes/credencialRoutes'));
@@ -59,8 +58,8 @@ app.use('/api/reciclajes', require('./routes/reciclajes'));
 app.use('/api/registro_reciclaje', require('./routes/registroReciclajeRoutes'));
 // Ruta para las operaciones con GreenCoins
 app.use('/api/ofertas_greencoins', operaciones);
-
 app.use('/api/notificaciones', notificationRoutes);
+*/
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

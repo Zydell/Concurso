@@ -1,11 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
-    const Ciudadano = sequelize.define('tb_ciudadano', {
-      ciudadano_id: {
+    const Profesor = sequelize.define('tb_profesor', {
+      profesor_id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
       },
-      greencoin_id: DataTypes.INTEGER,
       nombre: {
         type: DataTypes.STRING(100),
         allowNull: false
@@ -16,10 +15,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       telefono: {
         type: DataTypes.CHAR(10),
-        allowNull: false
-      },
-      fecha_nac: {
-        type: DataTypes.DATE,
         allowNull: false
       },
       fecharegistro: {
@@ -35,14 +30,10 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.NOW,
       }*/
     }, {
-      tableName: 'tb_ciudadano',
+      tableName: 'tb_estudiante',
       timestamps: false
     });
   
-    Ciudadano.associate = function(models) {
-      Ciudadano.belongsTo(models.tb_greencoin_cdn, { foreignKey: 'greencoin_id'});
-    };
-  
-    return Ciudadano;
+    return Profesor;
   };
   
