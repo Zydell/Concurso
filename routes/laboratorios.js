@@ -7,7 +7,7 @@ router.post('/registrar', reciclajeController.registrarLaboratorio);
 //router.get('/historial/ciudadano/:ciudadano_id', reciclajeController.obtenerHistorialCiudadano);
 //router.get('/historial/negocio/:negocio_id', reciclajeController.obtenerHistorialNegocio);
 // Get all 
-
+/*
 router.get('/', async (req, res) => {
     try {
       const admin = await db.tb_laboratorio.findAll();
@@ -16,6 +16,20 @@ router.get('/', async (req, res) => {
       res.status(500).json({ error: error.message });
     }
   });
+*/
+  router.get('/laboratorios', async (req, res) => {
+    try {
+        const laboratorios = await db.tb_laboratorio.findAll({
+            include: {
+                model: db.tb_horarioatencion,
+                attributes: ['horainicio', 'horafin'] // Especificar los atributos que deseas obtener
+            }
+        });
+        res.status(200).json(laboratorios);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 module.exports = router;
 /*
