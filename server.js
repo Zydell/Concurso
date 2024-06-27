@@ -15,7 +15,7 @@ const laboratorioRoutes = require('./routes/laboratorios');
 //require('./config/passport')(passport);
 
 const app = express();
-const PORT = process.env.PORT || 4200;
+const PORT = process.env.PORT || 3002;
 
 app.use(cors());
 app.use(bodyParser.json());
