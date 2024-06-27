@@ -1,0 +1,31 @@
+module.exports = (sequelize, DataTypes) => {
+    const Disponibildad = sequelize.define('tb_disponibilidad', {
+      disponibilidad_id: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+      },
+      laboratorio_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      capacidaddisp: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      equiposdisp: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      fechacreacion: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      }
+    }, {
+      tableName: 'tb_disponibilidad',
+      timestamps: false
+    });
+  
+    return Disponibildad;
+  };
+  
