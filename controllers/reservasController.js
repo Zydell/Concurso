@@ -1,13 +1,12 @@
-const { tb_reservalab, tb_horarioreser, tb_laboratorio, tb_credencial, tb_disponibilidad } = require('../models');
+const { tb_reservalab, tb_horarioreserva, tb_laboratorio, tb_credenciales, tb_disponibilidad } = require('../models');
 const enviarCorreo = require('../services/emailService');
 
-const reservaExists = async (laboratorio_id, fecha, horainicio, horafin) => {
-    const existingReserva = await tb_horarioreser.findOne({
+const reservaExists = async (fecha, hora_inicio, hora_fin) => {
+    const existingReserva = await tb_horarioreserva.findOne({
         where: {
-            laboratorio_id,
             fecha,
-            horainicio,
-            horafin
+            hora_inicio,
+            hora_fin
         }
     });
     return !!existingReserva;
@@ -15,9 +14,11 @@ const reservaExists = async (laboratorio_id, fecha, horainicio, horafin) => {
 
 exports.reservarLaboratorio = async (req, res) => {
     try {
-        const { laboratorio_id, credencial_id, nombre, tiporeserva, fecha, horainicio, horafin } = req.body;
+        const { laboratorio_id, credencial_id, nombre, tiporeserva, fechaing, hora_inicio, hora_fin } = req.body;
 
-        if (await reservaExists(laboratorio_id, fecha, horainicio, horafin)) {
+        let fecha = new Date(fechaing);
+
+        if (await reservaExists(laboratorio_id, fecha, hora_inicio, hora_fin)) {
             return res.status(400).json({ message: 'El laboratorio ya está reservado para ese horario.' });
         }
 
@@ -28,19 +29,20 @@ exports.reservarLaboratorio = async (req, res) => {
             tiporeserva
         });
 
-        const horarioReserva = await tb_horarioreser.create({
+        await tb_horarioreserva.create({
             reservalab_id: reserva.reservalab_id,
             fecha,
-            horainicio,
-            horafin
+            hora_inicio,
+            hora_fin
         });
 
-        const credencial = await tb_credencial.findByPk(credencial_id);
+        const credencial = await tb_credenciales.findByPk(credencial_id);
         const laboratorio = await tb_laboratorio.findByPk(laboratorio_id);
         const asunto = 'Reserva Confirmada';
-        const texto = `Su reserva para el laboratorio ${laboratorio.nombre} ha sido confirmada para el ${fecha} desde ${horainicio} hasta ${horafin}.`;
+        const texto = `Su reserva para el laboratorio ${laboratorio.nombre} ha sido confirmada para el ${fecha} desde ${hora_inicio} hasta ${hora_fin}.`;
 
-        await enviarCorreo(credencial.correo, asunto, texto);
+        const result = await enviarCorreo(credencial.correo_electronico, asunto, texto);
+        console.log('Correo enviado:', result);
 
         res.status(201).json({ message: 'Reserva creada y correo enviado' });
     } catch (error) {
@@ -54,15 +56,15 @@ exports.cancelarReserva = async (req, res) => {
         const { reservalab_id } = req.body;
 
         const reserva = await tb_reservalab.findByPk(reservalab_id);
-        const credencial = await tb_credencial.findByPk(reserva.credencial_id);
+        const credencial = await tb_credenciales.findByPk(reserva.credencial_id);
 
-        await tb_horarioreser.destroy({ where: { reservalab_id } });
+        await tb_horarioreserva.destroy({ where: { reservalab_id } });
         await tb_reservalab.destroy({ where: { reservalab_id } });
 
         const asunto = 'Reserva Cancelada';
         const texto = `Su reserva para el laboratorio ha sido cancelada.`;
 
-        await enviarCorreo(credencial.correo, asunto, texto);
+        await enviarCorreo(credencial.correo_electronico, asunto, texto);
 
         res.status(200).json({ message: 'Reserva cancelada y correo enviado' });
     } catch (error) {
@@ -73,17 +75,19 @@ exports.cancelarReserva = async (req, res) => {
 
 exports.modificarReserva = async (req, res) => {
     try {
-        const { reservalab_id, fecha, horainicio, horafin } = req.body;
+        const { reservalab_id, fechaing, hora_inicio, hora_fin } = req.body;
 
-        await tb_horarioreser.update({ fecha, horainicio, horafin }, { where: { reservalab_id } });
+        let fecha = new Date(fechaing);
+
+        await tb_horarioreserva.update({ fecha, hora_inicio, hora_fin }, { where: { reservalab_id } });
 
         const reserva = await tb_reservalab.findByPk(reservalab_id);
-        const credencial = await tb_credencial.findByPk(reserva.credencial_id);
+        const credencial = await tb_credenciales.findByPk(reserva.credencial_id);
         const laboratorio = await tb_laboratorio.findByPk(reserva.laboratorio_id);
         const asunto = 'Reserva Modificada';
-        const texto = `Su reserva para el laboratorio ${laboratorio.nombre} ha sido modificada para el ${fecha} desde ${horainicio} hasta ${horafin}.`;
+        const texto = `Su reserva para el laboratorio ${laboratorio.nombre} ha sido modificada para el ${fecha} desde ${hora_inicio} hasta ${hora_fin}.`;
 
-        await enviarCorreo(credencial.correo, asunto, texto);
+        await enviarCorreo(credencial.correo_electronico, asunto, texto);
 
         res.status(200).json({ message: 'Reserva modificada y correo enviado' });
     } catch (error) {

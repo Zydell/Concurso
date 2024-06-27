@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(100),
         allowNull: false
       },
-      tipousuario: {
+      tiporeserva: {
         type: DataTypes.INTEGER,
         allowNull: false
       }

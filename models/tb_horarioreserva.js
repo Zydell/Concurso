@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       reservalab_id: DataTypes.INTEGER,
       fecha: {
-        type: DataTypes.DATEONLY,
+        type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
       },
       hora_inicio: {
