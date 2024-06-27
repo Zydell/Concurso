@@ -76,9 +76,7 @@ exports.registerProfesor = async (req, res) => {
         // Crear negocio
         const profesor = await tb_profesor.create({
             nombre,
-            propietario,
-            tipo_negocio,
-            direccion,
+            apellido,
             telefono,
             fecharegistro: new Date()
         });
