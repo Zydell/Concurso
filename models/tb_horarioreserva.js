@@ -10,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATEONLY,
         defaultValue: DataTypes.NOW,
       },
-      fecha_inicio: {
+      hora_inicio: {
         type: DataTypes.TIME,
         allowNull: false
       },
-      fecha_fin: {
+      hora_fin: {
         type: DataTypes.TIME,
         allowNull: false
       }
