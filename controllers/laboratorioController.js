@@ -42,6 +42,8 @@ exports.registrarLaboratorio = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+
 /*
 // Obtener historial de reciclaje para un ciudadano
 exports.obtenerHistorialCiudadano = async (req, res) => {
