@@ -3,8 +3,8 @@ const router = express.Router();
 const reciclajeController = require('../controllers/laboratorioController');
 
 router.post('/registrar', reciclajeController.registrarLaboratorio);
-router.get('/historial/ciudadano/:ciudadano_id', reciclajeController.obtenerHistorialCiudadano);
-router.get('/historial/negocio/:negocio_id', reciclajeController.obtenerHistorialNegocio);
+//router.get('/historial/ciudadano/:ciudadano_id', reciclajeController.obtenerHistorialCiudadano);
+//router.get('/historial/negocio/:negocio_id', reciclajeController.obtenerHistorialNegocio);
 
 module.exports = router;
 /*

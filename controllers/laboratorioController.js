@@ -1,5 +1,5 @@
 const { tb_laboratorio, tb_horarioatencion, tb_credenciales} = require('../models');
-//const notificationService = require('../services/notificationService');
+const notificationService = require('../services/notificationService');
 
 const laboExists = async (nombre) => {
     const existingUser = await tb_laboratorio.findOne({ where: { nombre } });
@@ -23,7 +23,7 @@ exports.registrarLaboratorio = async (req, res) => {
         });
 
         // Crear el registro de reciclaje
-        await tb_registra_reciclaje.create({
+        const lab = await tb_laboratorio.create({
             horarioaten_id: horario.horarioaten_id,
             nombre,
             capacidad,
@@ -35,14 +35,14 @@ exports.registrarLaboratorio = async (req, res) => {
             titulo: 'Registro de laboratorio exitoso',
             mensaje: `Has registrado un laboratorio exitosamente`
         };
-        notificationService.addNotification(estudiante_id, notificacionMensaje);
+        notificationService.addNotification(lab.laboratorio_id, notificacionMensaje);
 
-        res.status(201).json({ message: 'Laboratorio registrado exitosamente', reciclaje });
+        res.status(201).json({ message: 'Laboratorio registrado exitosamente', nombre });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
-
+/*
 // Obtener historial de reciclaje para un ciudadano
 exports.obtenerHistorialCiudadano = async (req, res) => {
     try {
@@ -84,3 +84,4 @@ exports.obtenerHistorialNegocio = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+*/
