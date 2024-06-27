@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Laboratorio.associate = function(models) {
-        Laboratorio.belongsTo(models.tb_horarioatencion, { foreignKey: 'horararioaten_id' });
+        Laboratorio.belongsTo(models.tb_horarioatencion, { foreignKey: 'horarioaten_id' });
     };
   
     return Laboratorio;

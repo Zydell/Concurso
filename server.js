@@ -3,10 +3,12 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const db = require('./models'); // Asegúrate de que el archivo de modelos está bien configurado
 const passport = require('passport');
+
+
 const authRoutes = require('./routes/auth');
 const passportJWT = require('passport-jwt');
 const { Strategy, ExtractJwt } = passportJWT;
-//const reciclajeRoutes = require('./routes/reciclajeRoutes');
+const laboratorioRoutes = require('./routes/laboratorios');
 //const operaciones = require('./routes/operaciones');
 //const notificationRoutes = require('./routes/notificationRoutes'); // Importar rutas de notificaciones
 
@@ -40,6 +42,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/protected', passport.authenticate('jwt', { session: false }), (req, res) => {
   res.json({ message: 'Acceso a la Ruta protegida' });
 });
+app.use('/api/laboratorio', laboratorioRoutes);
 /*
 app.use('/api/reciclaje', reciclajeRoutes);
 
