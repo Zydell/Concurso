@@ -43,6 +43,44 @@ exports.registrarLaboratorio = async (req, res) => {
     }
 };
 
+// Actualizar laboratorio
+exports.actualizarLaboratorio = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { nombre, capacidad, cantequipos, horainicio, horafin } = req.body;
+
+        // Buscar laboratorio existente
+        const lab = await tb_laboratorio.findByPk(id);
+        if (!lab) {
+            return res.status(404).json({ message: 'Laboratorio no encontrado.' });
+        }
+
+        // Actualizar horario
+        const horario = await tb_horarioatencion.findByPk(lab.horarioaten_id);
+        if (horario) {
+            horario.horainicio = horainicio;
+            horario.horafin = horafin;
+            await horario.save();
+        }
+
+        // Actualizar datos del laboratorio
+        lab.nombre = nombre;
+        lab.capacidad = capacidad;
+        lab.cantequipos = cantequipos;
+        await lab.save();
+
+        // Agregar notificación al servicio de notificaciones
+        const notificacionMensaje = {
+            titulo: 'Actualización de laboratorio exitosa',
+            mensaje: `Has actualizado el laboratorio exitosamente`
+        };
+        notificationService.addNotification(lab.laboratorio_id, notificacionMensaje);
+
+        res.status(200).json({ message: 'Laboratorio actualizado exitosamente', nombre });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 
 /*
 // Obtener historial de reciclaje para un ciudadano

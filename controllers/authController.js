@@ -9,19 +9,7 @@ const emailExists = async (correo_electronico) => {
     const existingUser = await tb_credenciales.findOne({ where: { correo_electronico } });
     return !!existingUser;
 };
-/*
-// Calcular la edad a partir de la fecha de nacimiento
-const calculateAge = (fecha_nac) => {
-    const birthDate = new Date(fecha_nac);
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDifference = today.getMonth() - birthDate.getMonth();
-    if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
-    }
-    return age;
-};
-*/
+
 // Registro de Estudiante
 exports.registerEstudiante = async (req, res) => {
     try {
