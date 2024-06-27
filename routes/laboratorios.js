@@ -1,10 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const reciclajeController = require('../controllers/laboratorioController');
+const db = require('../models');
 
 router.post('/registrar', reciclajeController.registrarLaboratorio);
-router.get('/historial/ciudadano/:ciudadano_id', reciclajeController.obtenerHistorialCiudadano);
-router.get('/historial/negocio/:negocio_id', reciclajeController.obtenerHistorialNegocio);
+//router.get('/historial/ciudadano/:ciudadano_id', reciclajeController.obtenerHistorialCiudadano);
+//router.get('/historial/negocio/:negocio_id', reciclajeController.obtenerHistorialNegocio);
+// Get all 
+
+router.get('/', async (req, res) => {
+    try {
+      const admin = await db.tb_laboratorio.findAll();
+      res.status(200).json(admin);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
 
 module.exports = router;
 /*
